@@ -11,7 +11,7 @@ scanDir="${PLUGIN_SCAN_DIR:-.}"
 scanImage="${PLUGIN_SCAN_IMAGE}"
 scope="${PLUGIN_SCOPE}"
 
-[[ ! -z $severityCutoff  ]] && command="${command} --fail-build ${severityCutoff}"
+[[ ! -z $severityCutoff  ]] && command="${command} --fail-on ${severityCutoff}"
 [[ ! -z $scope  ]] && command="${command} --scope ${scope}"
 
 if $onlyFixed; then
