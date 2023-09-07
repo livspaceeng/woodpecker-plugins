@@ -10,6 +10,11 @@ byCVE="${PLUGIN_BY_CVE:-false}"
 scanDir="${PLUGIN_SCAN_DIR:-.}"
 scanImage="${PLUGIN_SCAN_IMAGE}"
 scope="${PLUGIN_SCOPE}"
+name="${PLUGIN_NAME}"
+
+if [ -z $name ]; then
+  name="${CI_REPO}"
+fi
 
 [[ ! -z $severityCutoff  ]] && command="${command} --fail-on ${severityCutoff}"
 [[ ! -z $scope  ]] && command="${command} --scope ${scope}"
@@ -26,10 +31,13 @@ fi
 if $debug; then
   command="${command} --vv"
 fi
+
+command="${command} --name ${name}"
+
 if [ -z $scanImage ]; then
-  command="${command} ${scanDir}"
+  command="${command} dir:${scanDir}"
 else
-  command="${command} ${scanImage}"
+  command="${command} registry:${scanImage}"
 fi
 echo "Executing $command"
 
