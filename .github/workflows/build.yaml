@@ -1,13 +1,15 @@
 name: Build and publish the woodpecker plugin images
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
   push:
-    tags:
-      - '*'
     branches:
       - 'main'
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
+    environment: Production
     permissions:
       contents: read
       packages: write
@@ -17,14 +19,21 @@ jobs:
         include:
           - dockerfile: ./plugins/grype/Dockerfile
             image: woodpecker-grype
+          - dockerfile: ./plugins/jscpd/Dockerfile
+            image: woodpecker-jscpd
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Get tag
-        id: repository
-        run: echo "tag=$(git describe --tags HEAD)" > $GITHUB_ENV
+      - name: Generate Tag
+        run: |
+          GIT_TAG="${{ github.ref_name }}-$(date --date="${{ github.event.repository.updated_at }}" "+%Y%m%d%H%M")-$(date "+%Y%m%d%H%M")"
+          echo $GIT_TAG
+          echo GIT_TAG=$GIT_TAG >> $GITHUB_ENV
+#      - name: Get tag
+#        id: repository
+#        run: echo "tag=$(git describe --tags HEAD)" > $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -42,4 +51,4 @@ jobs:
           file: ${{ matrix.dockerfile }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/livspaceeng/${{ matrix.image }}:${{ env.tag }}
+          tags: ghcr.io/livspaceeng/${{ matrix.image }}:${{ env.GIT_TAG }}
