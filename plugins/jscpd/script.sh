@@ -10,7 +10,8 @@ echo '{
         "threshold": '"${threshold}"',
         "minTokens": '"${minTokens}"',
         "reporters": [
-          "consoleFull"
+          "consoleFull",
+          "console"
         ],
         "pattern": "'"${pattern}"'",
         "ignore": "'"${ignore}"'"
