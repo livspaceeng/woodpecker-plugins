@@ -7,14 +7,14 @@ ignore="${PLUGIN_IGNORE:-**/*.min.js,**/*.map,**/*.yaml,**/*.json}"
 scanDir="${PLUGIN_SCAN_DIR:-.}"
 
 echo '{
-        "threshold": '"${threshold}"',
-        "minTokens": '"${minTokens}"',
+        "threshold": "'"${threshold}"'",
+        "minTokens": "'"${minTokens}"'",
         "reporters": [
           "json"
         ],
         "output": "./",
-        "pattern": '"${pattern}"',
-        "ignore": '"${ignore}"'
+        "pattern": "'"${pattern}"'",
+        "ignore": "'"${ignore}"'"
       }' > /tmp/.jscpd.json
 jscpd --exitCode 1 --config /tmp/.jscpd.json "${scanDir}"
 
