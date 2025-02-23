@@ -7,8 +7,8 @@ ignore="${PLUGIN_IGNORE:-**/*.min.js,**/*.map,**/*.yaml,**/*.json}"
 scanDir="${PLUGIN_SCAN_DIR:-.}"
 
 echo '{
-        "threshold": "'"${threshold}"'",
-        "minTokens": "'"${minTokens}"'",
+        "threshold": '"${threshold}"',
+        "minTokens": '"${minTokens}"',
         "reporters": [
           "consoleFull"
         ],
