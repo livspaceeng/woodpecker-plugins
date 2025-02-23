@@ -10,11 +10,11 @@ echo '{
         "threshold": "'"${threshold}"'",
         "minTokens": "'"${minTokens}"'",
         "reporters": [
-          "json"
+          "consoleFull"
         ],
-        "output": "./",
         "pattern": "'"${pattern}"'",
         "ignore": "'"${ignore}"'"
       }' > /tmp/.jscpd.json
+cat /tmp/.jscpd.json
 jscpd --exitCode 1 --config /tmp/.jscpd.json "${scanDir}"
 
