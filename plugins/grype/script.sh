@@ -8,6 +8,7 @@ onlyFixed="${PLUGIN_ONLY_FIXED:-false}"
 addCPESIfNone="${PLUGIN_ADD_CPES_IF_NONE:-false}"
 byCVE="${PLUGIN_BY_CVE:-false}"
 scanDir="${PLUGIN_SCAN_DIR:-.}"
+exclude="${PLUGIN_EXCLUDE}"
 scanImage="${PLUGIN_SCAN_IMAGE}"
 scope="${PLUGIN_SCOPE}"
 name="${PLUGIN_NAME}"
@@ -33,6 +34,14 @@ if $debug; then
 fi
 
 command="${command} --name ${name}"
+
+# comma-separated globs, quoted so eval passes them to grype rather than
+# letting the shell expand them
+if [ -n "${exclude}" ]; then
+  for pattern in $(echo "${exclude}" | tr ',' ' '); do
+    command="${command} --exclude '${pattern}'"
+  done
+fi
 
 if [ -z $scanImage ]; then
   command="${command} dir:${scanDir}"
